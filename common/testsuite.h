@@ -1220,7 +1220,7 @@ static void mavlink_test_attitude_quaternion(uint8_t system_id, uint8_t componen
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_attitude_quaternion_t packet_in = {
-        963497464,45.0,73.0,101.0,129.0,157.0,185.0,213.0,{ 241.0, 242.0, 243.0, 244.0 }
+        963497464,45.0,73.0,101.0,129.0,157.0,185.0,213.0
     };
     mavlink_attitude_quaternion_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -1233,7 +1233,6 @@ static void mavlink_test_attitude_quaternion(uint8_t system_id, uint8_t componen
         packet1.pitchspeed = packet_in.pitchspeed;
         packet1.yawspeed = packet_in.yawspeed;
         
-        mav_array_memcpy(packet1.repr_offset_q, packet_in.repr_offset_q, sizeof(float)*4);
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
@@ -1247,12 +1246,12 @@ static void mavlink_test_attitude_quaternion(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_attitude_quaternion_pack(system_id, component_id, &msg , packet1.time_boot_ms , packet1.q1 , packet1.q2 , packet1.q3 , packet1.q4 , packet1.rollspeed , packet1.pitchspeed , packet1.yawspeed , packet1.repr_offset_q );
+    mavlink_msg_attitude_quaternion_pack(system_id, component_id, &msg , packet1.time_boot_ms , packet1.q1 , packet1.q2 , packet1.q3 , packet1.q4 , packet1.rollspeed , packet1.pitchspeed , packet1.yawspeed );
     mavlink_msg_attitude_quaternion_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_attitude_quaternion_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.time_boot_ms , packet1.q1 , packet1.q2 , packet1.q3 , packet1.q4 , packet1.rollspeed , packet1.pitchspeed , packet1.yawspeed , packet1.repr_offset_q );
+    mavlink_msg_attitude_quaternion_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.time_boot_ms , packet1.q1 , packet1.q2 , packet1.q3 , packet1.q4 , packet1.rollspeed , packet1.pitchspeed , packet1.yawspeed );
     mavlink_msg_attitude_quaternion_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -1265,7 +1264,7 @@ static void mavlink_test_attitude_quaternion(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_attitude_quaternion_send(MAVLINK_COMM_1 , packet1.time_boot_ms , packet1.q1 , packet1.q2 , packet1.q3 , packet1.q4 , packet1.rollspeed , packet1.pitchspeed , packet1.yawspeed , packet1.repr_offset_q );
+    mavlink_msg_attitude_quaternion_send(MAVLINK_COMM_1 , packet1.time_boot_ms , packet1.q1 , packet1.q2 , packet1.q3 , packet1.q4 , packet1.rollspeed , packet1.pitchspeed , packet1.yawspeed );
     mavlink_msg_attitude_quaternion_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -10973,80 +10972,25 @@ static void mavlink_test_onboard_computer_status(uint8_t system_id, uint8_t comp
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
-static void mavlink_test_play_tune_v2(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_mavlink_service_version(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
     mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_PLAY_TUNE_V2 >= 256) {
+        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_MAVLINK_SERVICE_VERSION >= 256) {
             return;
         }
 #endif
     mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-    mavlink_play_tune_v2_t packet_in = {
-        963497464,17,84,"GHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVW"
+    mavlink_mavlink_service_version_t packet_in = {
+        93372036854775807ULL,17651,17755,41,108
     };
-    mavlink_play_tune_v2_t packet1, packet2;
+    mavlink_mavlink_service_version_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
-        packet1.format = packet_in.format;
-        packet1.target_system = packet_in.target_system;
-        packet1.target_component = packet_in.target_component;
-        
-        mav_array_memcpy(packet1.tune, packet_in.tune, sizeof(char)*252);
-        
-#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
-        if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
-           // cope with extensions
-           memset(MAVLINK_MSG_ID_PLAY_TUNE_V2_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_PLAY_TUNE_V2_MIN_LEN);
-        }
-#endif
-        memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_play_tune_v2_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_play_tune_v2_decode(&msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-
-        memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_play_tune_v2_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.format , packet1.tune );
-    mavlink_msg_play_tune_v2_decode(&msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-
-        memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_play_tune_v2_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.format , packet1.tune );
-    mavlink_msg_play_tune_v2_decode(&msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-
-        memset(&packet2, 0, sizeof(packet2));
-        mavlink_msg_to_send_buffer(buffer, &msg);
-        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
-            comm_send_ch(MAVLINK_COMM_0, buffer[i]);
-        }
-    mavlink_msg_play_tune_v2_decode(last_msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-        
-        memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_play_tune_v2_send(MAVLINK_COMM_1 , packet1.target_system , packet1.target_component , packet1.format , packet1.tune );
-    mavlink_msg_play_tune_v2_decode(last_msg, &packet2);
-        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
-}
-
-static void mavlink_test_supported_tunes(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
-{
-#ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
-    mavlink_status_t *status = mavlink_get_channel_status(MAVLINK_COMM_0);
-        if ((status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) && MAVLINK_MSG_ID_SUPPORTED_TUNES >= 256) {
-            return;
-        }
-#endif
-    mavlink_message_t msg;
-        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        uint16_t i;
-    mavlink_supported_tunes_t packet_in = {
-        963497464,17,84
-    };
-    mavlink_supported_tunes_t packet1, packet2;
-        memset(&packet1, 0, sizeof(packet1));
-        packet1.format = packet_in.format;
+        packet1.service_flags = packet_in.service_flags;
+        packet1.service_id = packet_in.service_id;
+        packet1.selected_version = packet_in.selected_version;
         packet1.target_system = packet_in.target_system;
         packet1.target_component = packet_in.target_component;
         
@@ -11054,22 +10998,22 @@ static void mavlink_test_supported_tunes(uint8_t system_id, uint8_t component_id
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
            // cope with extensions
-           memset(MAVLINK_MSG_ID_SUPPORTED_TUNES_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_SUPPORTED_TUNES_MIN_LEN);
+           memset(MAVLINK_MSG_ID_MAVLINK_SERVICE_VERSION_MIN_LEN + (char *)&packet1, 0, sizeof(packet1)-MAVLINK_MSG_ID_MAVLINK_SERVICE_VERSION_MIN_LEN);
         }
 #endif
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_supported_tunes_encode(system_id, component_id, &msg, &packet1);
-    mavlink_msg_supported_tunes_decode(&msg, &packet2);
+    mavlink_msg_mavlink_service_version_encode(system_id, component_id, &msg, &packet1);
+    mavlink_msg_mavlink_service_version_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_supported_tunes_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.format );
-    mavlink_msg_supported_tunes_decode(&msg, &packet2);
+    mavlink_msg_mavlink_service_version_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.service_id , packet1.selected_version , packet1.service_flags );
+    mavlink_msg_mavlink_service_version_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_supported_tunes_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.format );
-    mavlink_msg_supported_tunes_decode(&msg, &packet2);
+    mavlink_msg_mavlink_service_version_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.service_id , packet1.selected_version , packet1.service_flags );
+    mavlink_msg_mavlink_service_version_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -11077,12 +11021,12 @@ static void mavlink_test_supported_tunes(uint8_t system_id, uint8_t component_id
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
             comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-    mavlink_msg_supported_tunes_decode(last_msg, &packet2);
+    mavlink_msg_mavlink_service_version_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_supported_tunes_send(MAVLINK_COMM_1 , packet1.target_system , packet1.target_component , packet1.format );
-    mavlink_msg_supported_tunes_decode(last_msg, &packet2);
+    mavlink_msg_mavlink_service_version_send(MAVLINK_COMM_1 , packet1.target_system , packet1.target_component , packet1.service_id , packet1.selected_version , packet1.service_flags );
+    mavlink_msg_mavlink_service_version_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
@@ -11734,8 +11678,7 @@ static void mavlink_test_common(uint8_t system_id, uint8_t component_id, mavlink
     mavlink_test_time_estimate_to_target(system_id, component_id, last_msg);
     mavlink_test_tunnel(system_id, component_id, last_msg);
     mavlink_test_onboard_computer_status(system_id, component_id, last_msg);
-    mavlink_test_play_tune_v2(system_id, component_id, last_msg);
-    mavlink_test_supported_tunes(system_id, component_id, last_msg);
+    mavlink_test_mavlink_service_version(system_id, component_id, last_msg);
     mavlink_test_wheel_distance(system_id, component_id, last_msg);
     mavlink_test_open_drone_id_basic_id(system_id, component_id, last_msg);
     mavlink_test_open_drone_id_location(system_id, component_id, last_msg);
