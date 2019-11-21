@@ -11099,13 +11099,15 @@ static void mavlink_test_mavlink_service_version(uint8_t system_id, uint8_t comp
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_mavlink_service_version_t packet_in = {
-        93372036854775807ULL,17651,17755,41,108
+        93372036854775807ULL,17651,17755,17859,17963,53,120
     };
     mavlink_mavlink_service_version_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.service_flags = packet_in.service_flags;
         packet1.service_id = packet_in.service_id;
         packet1.selected_version = packet_in.selected_version;
+        packet1.service_min_version = packet_in.service_min_version;
+        packet1.service_max_version = packet_in.service_max_version;
         packet1.target_system = packet_in.target_system;
         packet1.target_component = packet_in.target_component;
         
@@ -11122,12 +11124,12 @@ static void mavlink_test_mavlink_service_version(uint8_t system_id, uint8_t comp
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_mavlink_service_version_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.service_id , packet1.selected_version , packet1.service_flags );
+    mavlink_msg_mavlink_service_version_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.service_id , packet1.selected_version , packet1.service_flags , packet1.service_min_version , packet1.service_max_version );
     mavlink_msg_mavlink_service_version_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_mavlink_service_version_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.service_id , packet1.selected_version , packet1.service_flags );
+    mavlink_msg_mavlink_service_version_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.service_id , packet1.selected_version , packet1.service_flags , packet1.service_min_version , packet1.service_max_version );
     mavlink_msg_mavlink_service_version_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -11140,7 +11142,7 @@ static void mavlink_test_mavlink_service_version(uint8_t system_id, uint8_t comp
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_mavlink_service_version_send(MAVLINK_COMM_1 , packet1.target_system , packet1.target_component , packet1.service_id , packet1.selected_version , packet1.service_flags );
+    mavlink_msg_mavlink_service_version_send(MAVLINK_COMM_1 , packet1.target_system , packet1.target_component , packet1.service_id , packet1.selected_version , packet1.service_flags , packet1.service_min_version , packet1.service_max_version );
     mavlink_msg_mavlink_service_version_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
